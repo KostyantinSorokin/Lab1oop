@@ -34,12 +34,24 @@ namespace Lab1oop
                 case Parser.Errors.NOERR: return val.ToString();
                 case Parser.Errors.DIVBYZERO:
                     {
-                        //MessageBox.Show("Ділення на нуль неможливе, формула змінена на нуль");
-                        return "ERORR0";
+                        MessageBox.Show("Ділення на нуль неможливе, формула змінена на нуль");
+                        return "Error";
                     }
-                case Parser.Errors.NOEXP: return "ERORR1";
-                case Parser.Errors.UNBALPARENS: return "ERORR2";
-                case Parser.Errors.SYNTAX: return "ERORR3";
+                case Parser.Errors.NOEXP: 
+                    {
+                        MessageBox.Show("Немає формули");
+                        return "Error"; 
+                    }
+                case Parser.Errors.UNBALPARENS: 
+                    {
+                        MessageBox.Show("Незакриті дужки");
+                        return "Error"; 
+                    }
+                case Parser.Errors.SYNTAX: 
+                    {
+                        MessageBox.Show("Помилка в написанні формули або посилання на помилку");
+                        return "Error"; 
+                    }
             }
             return "";
         }

@@ -12,6 +12,7 @@ namespace Lab1oop
         public string exp;
 
         public List<string> dependoncells = new List<string>();
+        public List<string> dependfromCells = new List<string>();
 
         public Cell()
         {

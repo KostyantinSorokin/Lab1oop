@@ -1,4 +1,6 @@
-﻿namespace Lab1oop
+﻿using System.Globalization;
+
+namespace Lab1oop
 {
     public partial class Form1 : Form
     {
@@ -96,6 +98,7 @@
                         table[r, c].val = res.GetVal();
                         update(table[r, c], r, c);
                         dataGridView1.Rows[r].Cells[c].Value = res.GetVal();
+                        update(table[r, c], r, c);
                     }
                     else dataGridView1.Rows[r].Cells[c].Value = res.GetVal();
                 }
@@ -106,7 +109,6 @@
             for (int i = 0; i < cell.dependoncells.Count; i++)
             {
                 int t2 = (int)cell.dependoncells[i][1] - 48, t1 = cell.dependoncells[i][0] - 65;
-
                 Connection(table[t2, t1].val, t2, t1);
             }
         }
@@ -174,12 +176,38 @@
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if(dataGridView1.Rows.Count <= 2) { MessageBox.Show("Неможливло видалити"); return; }
+            if(dataGridView1.Rows.Count <= 2) { MessageBox.Show("Неможливло видалити," +
+                "\n повинно залишатись більше 2"); return; }
             else
             {
+                bool t = false;
                 for (int i = 0; i < colnum; i++)
                 {
                     addNewVal("0", rownum-1, i);
+                    if (table[rownum - 1, i].dependoncells.Count > 0) t = true;
+                }
+
+                if (t)
+                {
+                    MessageBox.Show("Були посилання на видалені змінні." +
+                        "\nЇх значення замінено на 0 у виразах");
+                    for (int i = 0; i < colnum; i++)
+                    {
+                        List<string> NewList = new List<string>();
+                        NewList.AddRange(table[i, colnum - 1].dependoncells);
+                        string str = null;              
+                        str += (char)(i+65);
+                        str += (rownum-1).ToString();
+                        //MessageBox.Show(str);
+                        for (int j = 0; j < NewList.Count; j++)
+                        {
+                            int t2 = (int)NewList[j][1] - 48,
+                                t1 = (int)NewList[j][0] - 65;
+                            table[t2, t1].exp = table[t2, t1].exp.Replace(str, "0");
+                            addNewVal(table[t2, t1].exp, t2, t1);
+                        }
+                        table[rownum - 1, i].dependoncells.Clear();
+                    }
                 }
                 
                 dataGridView1.Rows.RemoveAt(rownum-2);
@@ -201,11 +229,41 @@
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.Columns.Count <= 2) { MessageBox.Show("Неможливло видалити"); return; }
-            for (int i = 0; i < rownum-1; i++)
+            if (dataGridView1.Columns.Count <= 2) { MessageBox.Show("Неможливло видалити," +
+                "\n повинно залишатись більше 2"); return; }
+
+            bool t = false;
+            for (int i = 0; i < rownum; i++)
             {
                 addNewVal("0", i, colnum-1);
+                if (table[i, colnum - 1].dependoncells.Count > 0) t = true;
             }
+
+            if (t)
+            {
+                MessageBox.Show("Були посилання на видалені змінні." +
+                    "\nЇх значення замінено на 0 у виразах");
+                for (int i = 0; i < rownum; i++)
+                {
+                    List<string> NewList = new List<string>();
+                    NewList.AddRange(table[i, colnum - 1].dependoncells);
+                    string str = null;
+                    str += (char)(colnum +64);
+                    str += (i).ToString();
+                    //MessageBox.Show(str);
+                    for (int j = 0; j < NewList.Count; j++)
+                    {
+                        //MessageBox.Show("111");
+                        int t2 = (int)NewList[j][1] - 48,
+                            t1 = (int)NewList[j][0] - 65;
+                        
+                        table[t2, t1].exp = table[t2, t1].exp.Replace(str, "0");
+                        addNewVal(table[t2, t1].exp, t2, t1);
+                    }
+                    table[i, colnum - 1].dependoncells.Clear();
+                }
+            }
+
             dataGridView1.Columns.RemoveAt(colnum-1);
             colnum--;
         }
@@ -311,6 +369,35 @@
                     }   
                 }
             }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("На таблиці виберається клітинка," +
+                "\nв текстове поле вводитья вираз.");
+            MessageBox.Show("Значення виразу виводиться в обрану клітинку." +
+                "\nПри помилці виводится \"Error\" або \"#CIRCLE\".");
+            MessageBox.Show("Значення клітинок базово 0." +
+                "\nКлітинки з помилкою теж мають значення 0.");
+            MessageBox.Show("Для додання/видалення рядка/стовпчика" +
+                "\nнатискається відповідна кнопка." +
+                "\nКількість рядків: 2-10." +
+                "\nКількість стовпчиків: 2-26.");
+            MessageBox.Show("Для завантаження файлу або збереження файлу" +
+                "\nвикористовується \".txt\"." +
+                "\nУ файлі окремі значення клітинок " +
+                "\nу одному рядку відділені \"/\"," +
+                "\npядки записуються в окремі рядки.");
+            MessageBox.Show("Для посилання на іншу клітинку" +
+                "\nу виразі записується спочатку значення стовпчика," +
+                "\nпотім значення рядка;" +
+                "\nприклад - \"А0\".");
+            MessageBox.Show("Доступні функції додавання(+), віднімання(-)," +
+                "\nмноження(*), ділення(/), залишку від ділення(%),цылочисельного дылення(|)," +
+                "\nпіднесення до степеню(^), функцій мінімум та максимум, використання дужок");
+            MessageBox.Show("Мінімум та максимум приймають в дужках типу \"{}\"," +
+                "\nчерез кому, декілька значень або посилань на клітинку," +
+                "\nі повертають їх найменше або найбільше з них");
         }
     }
 }

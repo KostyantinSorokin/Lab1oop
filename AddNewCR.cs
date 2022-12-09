@@ -26,7 +26,8 @@ namespace Lab1oop
             }
             else
             {
-                MessageBox.Show("Max emount of Columns");
+                MessageBox.Show("Неможна збільшити кількість рядків," +
+                    "\nдосягнуто максимуму їх кількості");
                 return 0;
             }
 
@@ -59,7 +60,8 @@ namespace Lab1oop
             int r = countRow-1;
             if (countRow > 9)
             {
-                MessageBox.Show("Max emount of Rows");
+                MessageBox.Show("Неможна збільшити кількість рядків," +
+                    "\nдосягнуто максимуму їх кількості.");
                 return 0;
             }
             countRow++;
