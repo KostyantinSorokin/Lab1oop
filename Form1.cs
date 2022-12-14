@@ -5,8 +5,8 @@ namespace Lab1oop
     public partial class Form1 : Form
     {
         const int Mesures = 100;
-        int rownum = 0;
-        int colnum = 0;
+        int rowNum = 0;
+        int colNum = 0;
         AddNewCR addNew = new AddNewCR();
         private Dictionary<int, Cell> dict = new Dictionary<int, Cell>();
         Cell[,] table = new Cell[Mesures, Mesures];
@@ -25,20 +25,20 @@ namespace Lab1oop
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            rownum = 3;
-            colnum = 3;
+            rowNum = 3;
+            colNum = 3;
             
             string temp = null;
             char c = 'A';
             Cell[,] table = new Cell[Mesures, Mesures];
-            for(int i = 0;i< colnum; i++)
+            for(int i = 0;i< colNum; i++)
             {
                 temp += c;
                 dataGridView1.Columns.Add(Name, temp);
                 c++;
                 temp = null;
             }
-            for(int i = 0; i < rownum-1; i++)
+            for(int i = 0; i < rowNum-1; i++)
             {
                 dataGridView1.Rows.Add();
             }
@@ -51,21 +51,21 @@ namespace Lab1oop
         private void button1_Click_1(object sender, EventArgs e)
         {
             int rCheck = dataGridView1.Rows.Count;
-            addNew.addRow(dataGridView1, rownum);
-            if(rCheck<dataGridView1.Rows.Count) rownum++;
+            addNew.AddRow(dataGridView1, rowNum);
+            if(rCheck<dataGridView1.Rows.Count) rowNum++;
         }
 
         private void button2_Click_1(object sender, EventArgs e)
         {
             int cCheck = dataGridView1.Columns.Count;
-            addNew.addCol(dataGridView1, colnum);
-            if (cCheck < dataGridView1.Columns.Count) colnum++;
+            addNew.AddCol(dataGridView1, colNum);
+            if (cCheck < dataGridView1.Columns.Count) colNum++;
         }
 
-        public void addNewVal(string expre, int r, int c)
+        public void AddNewVal(string expre, int r, int c)
         {
             Parser parser = new Parser();
-            table[r, c].exp = expre;
+            table[r, c].Exp = expre;
             int h = 0;
             if (expre != null)
             {
@@ -86,44 +86,45 @@ namespace Lab1oop
                             MessageBox.Show("Error");
                             return;
                         }
-                        table[t2 - 48, t1 - 65].dependoncells.Add(table[r, c].setName(c, r));
-                        expre = expre.Replace(str, table[t2 - 48, t1 - 65].val);
+                        GiveName giveName = new GiveName();
+                        table[t2 - 48, t1 - 65].dependoncells.Add(giveName.SetName(c, r));
+                        expre = expre.Replace(str, table[t2 - 48, t1 - 65].Val);
                     }                    
                 }
-                if (circle(table[r, c], r, c))
+                if (Circle(table[r, c], r, c))
                 {
                     Result res = parser.Eval(expre);
                     if (res.except())
                     {
-                        table[r, c].val = res.GetVal();
-                        update(table[r, c], r, c);
+                        table[r, c].Val = res.GetVal();
                         dataGridView1.Rows[r].Cells[c].Value = res.GetVal();
-                        update(table[r, c], r, c);
+                        Update(table[r, c], r, c);
                     }
                     else dataGridView1.Rows[r].Cells[c].Value = res.GetVal();
                 }
             }
         }
-        public void update(Cell cell, int r, int c)
+        public void Update(Cell cell, int r, int c)
         {
             for (int i = 0; i < cell.dependoncells.Count; i++)
             {
                 int t2 = (int)cell.dependoncells[i][1] - 48, t1 = cell.dependoncells[i][0] - 65;
-                Connection(table[t2, t1].val, t2, t1);
+                Connection(table[t2, t1].Val, t2, t1);
             }
         }
 
-        public bool circle(Cell cell, int r, int c)
+        public bool Circle(Cell cell, int r, int c)
         {
             for (int i = 0; i < cell.dependoncells.Count; i++)
             {
                 int t2 = (int)cell.dependoncells[i][1] - 48, t1 = (int)cell.dependoncells[i][0] - 65;
+                GiveName giveName = new GiveName();
                 for (int j = 0; j < table[t2, t1].dependoncells.Count; j++)
                 {
-                    if (table[t2, t1].dependoncells[j] == table[r, c].setName(r, c))
+                    if (table[t2, t1].dependoncells[j] == giveName.SetName(r, c))
                     {
-                        nameCircle(cell, r, c);
-                        nameCircle(table[t2, t1], t2, t1);
+                        NameCircle(cell, r, c);
+                        NameCircle(table[t2, t1], t2, t1);
                         table[t2, t1].dependoncells.RemoveAt(j);
                         MessageBox.Show("Error");
                         return false;
@@ -133,7 +134,7 @@ namespace Lab1oop
             return true;
         }
 
-        public void nameCircle(Cell cell, int r, int c)
+        public void NameCircle(Cell cell, int r, int c)
         {
             for (int flag = 0; flag < cell.dependoncells.Count; flag++)
             {
@@ -158,16 +159,16 @@ namespace Lab1oop
                     str += temp[h1];
                     t2 = (int)temp[h1];
                     h1++;
-                    temp = temp.Replace(str, table[t2 - 48, t1 - 65].val);
+                    temp = temp.Replace(str, table[t2 - 48, t1 - 65].Val);
                 }
             }
-            if (circle(table[row, column], row, column))
+            if (Circle(table[row, column], row, column))
             {
                 Result Res = parser.Eval(temp);
                 if (Res.except())
                 {
-                    table[row, column].val = Res.GetVal();
-                    update(table[row, column], row, column);
+                    table[row, column].Val = Res.GetVal();
+                    Update(table[row, column], row, column);
                     dataGridView1.Rows[row].Cells[column].Value = Res.GetVal();
                 }
                 else return;
@@ -181,47 +182,47 @@ namespace Lab1oop
             else
             {
                 bool t = false;
-                for (int i = 0; i < colnum; i++)
+                for (int i = 0; i < colNum; i++)
                 {
-                    addNewVal("0", rownum-1, i);
-                    if (table[rownum - 1, i].dependoncells.Count > 0) t = true;
+                    AddNewVal("0", rowNum-1, i);
+                    if (table[rowNum - 1, i].dependoncells.Count > 0) t = true;
                 }
 
                 if (t)
                 {
                     MessageBox.Show("Були посилання на видалені змінні." +
                         "\nЇх значення замінено на 0 у виразах");
-                    for (int i = 0; i < colnum; i++)
+                    for (int i = 0; i < colNum; i++)
                     {
                         List<string> NewList = new List<string>();
-                        NewList.AddRange(table[i, colnum - 1].dependoncells);
+                        NewList.AddRange(table[i, colNum - 1].dependoncells);
                         string str = null;              
                         str += (char)(i+65);
-                        str += (rownum-1).ToString();
+                        str += (rowNum-1).ToString();
                         //MessageBox.Show(str);
                         for (int j = 0; j < NewList.Count; j++)
                         {
                             int t2 = (int)NewList[j][1] - 48,
                                 t1 = (int)NewList[j][0] - 65;
-                            table[t2, t1].exp = table[t2, t1].exp.Replace(str, "0");
-                            addNewVal(table[t2, t1].exp, t2, t1);
+                            table[t2, t1].Exp = table[t2, t1].Exp.Replace(str, "0");
+                            AddNewVal(table[t2, t1].Exp, t2, t1);
                         }
-                        table[rownum - 1, i].dependoncells.Clear();
+                        table[rowNum - 1, i].dependoncells.Clear();
                     }
                 }
                 
-                dataGridView1.Rows.RemoveAt(rownum-2);
-                rownum--;
-                dataGridView1.Rows[rownum-1].HeaderCell.Value = (rownum-1).ToString();
+                dataGridView1.Rows.RemoveAt(rowNum-2);
+                rowNum--;
+                dataGridView1.Rows[rowNum-1].HeaderCell.Value = (rowNum-1).ToString();
 
-                for (int i = 0; i < colnum; i++)
+                for (int i = 0; i < colNum; i++)
                 {
-                    if (table[rownum - 1, i].exp == "0") {
-                        dataGridView1.Rows[rownum - 1].Cells[i].Value = "";
+                    if (table[rowNum - 1, i].Exp == "0") {
+                        dataGridView1.Rows[rowNum - 1].Cells[i].Value = "";
                     }
                     else
                     {
-                        addNewVal(table[rownum - 1, i].exp, rownum - 1, i);
+                        AddNewVal(table[rowNum - 1, i].Exp, rowNum - 1, i);
                     }
                 }
             }
@@ -233,22 +234,22 @@ namespace Lab1oop
                 "\n повинно залишатись більше 2"); return; }
 
             bool t = false;
-            for (int i = 0; i < rownum; i++)
+            for (int i = 0; i < rowNum; i++)
             {
-                addNewVal("0", i, colnum-1);
-                if (table[i, colnum - 1].dependoncells.Count > 0) t = true;
+                AddNewVal("0", i, colNum-1);
+                if (table[i, colNum - 1].dependoncells.Count > 0) t = true;
             }
 
             if (t)
             {
                 MessageBox.Show("Були посилання на видалені змінні." +
                     "\nЇх значення замінено на 0 у виразах");
-                for (int i = 0; i < rownum; i++)
+                for (int i = 0; i < rowNum; i++)
                 {
                     List<string> NewList = new List<string>();
-                    NewList.AddRange(table[i, colnum - 1].dependoncells);
+                    NewList.AddRange(table[i, colNum - 1].dependoncells);
                     string str = null;
-                    str += (char)(colnum +64);
+                    str += (char)(colNum +64);
                     str += (i).ToString();
                     //MessageBox.Show(str);
                     for (int j = 0; j < NewList.Count; j++)
@@ -257,15 +258,15 @@ namespace Lab1oop
                         int t2 = (int)NewList[j][1] - 48,
                             t1 = (int)NewList[j][0] - 65;
                         
-                        table[t2, t1].exp = table[t2, t1].exp.Replace(str, "0");
-                        addNewVal(table[t2, t1].exp, t2, t1);
+                        table[t2, t1].Exp = table[t2, t1].Exp.Replace(str, "0");
+                        AddNewVal(table[t2, t1].Exp, t2, t1);
                     }
-                    table[i, colnum - 1].dependoncells.Clear();
+                    table[i, colNum - 1].dependoncells.Clear();
                 }
             }
 
-            dataGridView1.Columns.RemoveAt(colnum-1);
-            colnum--;
+            dataGridView1.Columns.RemoveAt(colNum-1);
+            colNum--;
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
@@ -276,13 +277,13 @@ namespace Lab1oop
 
                 int r=dataGridView1.CurrentCell.RowIndex;
                 int c=dataGridView1.CurrentCell.ColumnIndex;
-                addNewVal(temp, r, c);
+                AddNewVal(temp, r, c);
             }
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            textBox1.Text = table[dataGridView1.CurrentCell.RowIndex, dataGridView1.CurrentCell.ColumnIndex].exp;
+            textBox1.Text = table[dataGridView1.CurrentCell.RowIndex, dataGridView1.CurrentCell.ColumnIndex].Exp;
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -291,7 +292,7 @@ namespace Lab1oop
 
             int r = dataGridView1.CurrentCell.RowIndex;
             int c = dataGridView1.CurrentCell.ColumnIndex;
-            if(temp!=null) addNewVal(temp, r, c);
+            if(temp!=null) AddNewVal(temp, r, c);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -344,18 +345,18 @@ namespace Lab1oop
                             if (arLine.Length > dataGridView1.Columns.Count && dataGridView1.Columns.Count < 26)
                             {
                                 int cCheck = dataGridView1.Columns.Count;
-                                addNew.addCol(dataGridView1, colnum);
-                                if (cCheck < dataGridView1.Columns.Count) colnum++;
+                                addNew.AddCol(dataGridView1, colNum);
+                                if (cCheck < dataGridView1.Columns.Count) colNum++;
                             }
                             if (arLine[i] == "")
                             {
                                 dataGridView1.Rows[linenum].Cells[i].Value = "";
-                                table[linenum, i].val = "0";
-                                table[linenum, i].exp = "0";
+                                table[linenum, i].Val = "0";
+                                table[linenum, i].Exp = "0";
                             }
                             else
                             {
-                                addNewVal(arLine[i], linenum, i);
+                                AddNewVal(arLine[i], linenum, i);
                             }
                         }
                         line = reader.ReadLine();
@@ -363,8 +364,8 @@ namespace Lab1oop
                         if (line != null && dataGridView1.Rows.Count < 10 && dataGridView1.Rows.Count == linenum)
                         {
                             int rCheck = dataGridView1.Rows.Count;
-                            addNew.addRow(dataGridView1, rownum);
-                            if (rCheck < dataGridView1.Rows.Count) rownum++;
+                            addNew.AddRow(dataGridView1, rowNum);
+                            if (rCheck < dataGridView1.Rows.Count) rowNum++;
                         }
                     }   
                 }
@@ -373,31 +374,14 @@ namespace Lab1oop
 
         private void button7_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("На таблиці виберається клітинка," +
-                "\nв текстове поле вводитья вираз.");
-            MessageBox.Show("Значення виразу виводиться в обрану клітинку." +
-                "\nПри помилці виводится \"Error\" або \"#CIRCLE\".");
-            MessageBox.Show("Значення клітинок базово 0." +
-                "\nКлітинки з помилкою теж мають значення 0.");
-            MessageBox.Show("Для додання/видалення рядка/стовпчика" +
-                "\nнатискається відповідна кнопка." +
-                "\nКількість рядків: 2-10." +
-                "\nКількість стовпчиків: 2-26.");
-            MessageBox.Show("Для завантаження файлу або збереження файлу" +
-                "\nвикористовується \".txt\"." +
-                "\nУ файлі окремі значення клітинок " +
-                "\nу одному рядку відділені \"/\"," +
-                "\npядки записуються в окремі рядки.");
-            MessageBox.Show("Для посилання на іншу клітинку" +
-                "\nу виразі записується спочатку значення стовпчика," +
-                "\nпотім значення рядка;" +
-                "\nприклад - \"А0\".");
-            MessageBox.Show("Доступні функції додавання(+), віднімання(-)," +
-                "\nмноження(*), ділення(/), залишку від ділення(%),цылочисельного дылення(|)," +
-                "\nпіднесення до степеню(^), функцій мінімум та максимум, використання дужок");
-            MessageBox.Show("Мінімум та максимум приймають в дужках типу \"{}\"," +
-                "\nчерез кому, декілька значень або посилань на клітинку," +
-                "\nі повертають їх найменше або найбільше з них");
+            ShowInfo showInfo= new ShowInfo();
+            showInfo.ShowHowToUse();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            ShowInfo showInfo = new ShowInfo();
+            showInfo.ShowAbout();
         }
     }
 }

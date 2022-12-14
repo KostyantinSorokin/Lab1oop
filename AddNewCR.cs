@@ -12,11 +12,9 @@ namespace Lab1oop
         const int b = 65;
         const int alph = 26;
         char latter = 'A';
-        char firstlat = 'A';
-        int nfirstlat = 1;
-        string temp;
+        string? temp;
 
-        public int addCol(DataGridView dgv, int countCol)
+        public int AddCol(DataGridView dgv, int countCol)
         {
             if (countCol < alph)
             {
@@ -36,27 +34,13 @@ namespace Lab1oop
 
             dgv.Columns.Add(col);
             temp = null;
-
-            if(firstlat != 'Z')
+            if(latter != 'Z')
             {
-                if(latter != 'Z')
-                {
-                    latter++;
-                }
-                else
-                {
-                    latter = 'A';
-                    firstlat++;
-                }
-            }
-            else
-            {
-                firstlat = 'A';
-                nfirstlat++; 
+                latter++;
             }
             return 0;
         }
-        public int addRow(DataGridView dgv, int countRow) {
+        public int AddRow(DataGridView dgv, int countRow) {
             int r = countRow-1;
             if (countRow > 9)
             {

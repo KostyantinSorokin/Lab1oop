@@ -13,7 +13,7 @@ namespace Lab1oop
         const int alph = 26;
         enum Types { NONE, DELIMITR, VARIABLE, NUMBER};
         public enum Errors { NOERR, SYNTAX, UNBALPARENS, NOEXP, DIVBYZERO };
-        public Errors tokErrors;
+        public Errors TokErrors;
         private string exp;
         private int expIdx;
         private string token;
@@ -86,7 +86,7 @@ namespace Lab1oop
                     catch (FormatException)
                     {
                         result = 0.0;
-                        tokErrors = Errors.SYNTAX;
+                        TokErrors = Errors.SYNTAX;
                     }
                     getToken();
                     return;
@@ -99,7 +99,7 @@ namespace Lab1oop
                 
                 default:
                     result = 0.0;
-                    tokErrors = Errors.SYNTAX;
+                    TokErrors = Errors.SYNTAX;
                     break;
             }
         }
@@ -148,7 +148,7 @@ namespace Lab1oop
                 }
                 return m;
             }
-            tokErrors = Errors.SYNTAX;
+            TokErrors = Errors.SYNTAX;
             return 0;
         }
         void EvalExp1(out double result)
@@ -224,7 +224,7 @@ namespace Lab1oop
                     case "/":
                         if (partResult == 0.0)
                         {
-                            tokErrors = Errors.DIVBYZERO;
+                            TokErrors = Errors.DIVBYZERO;
                             result = partResult;
                         }else
                             result=result / partResult;
@@ -232,7 +232,7 @@ namespace Lab1oop
                     case "%":
                         if (partResult == 0.0)
                         {
-                            tokErrors = Errors.DIVBYZERO;
+                            TokErrors = Errors.DIVBYZERO;
                             result = partResult;
                         }
                         else
@@ -241,7 +241,7 @@ namespace Lab1oop
                     case "|":
                         if (partResult == 0.0)
                         {
-                            tokErrors = Errors.DIVBYZERO;
+                            TokErrors = Errors.DIVBYZERO;
                         }
                         else 
                             result=(double)((int)result / (int)partResult);
@@ -281,7 +281,7 @@ namespace Lab1oop
                 getToken();
                 EvalExp2(out result);
                 if (token != ")")
-                    tokErrors = Errors.UNBALPARENS;
+                    TokErrors = Errors.UNBALPARENS;
                 getToken();
             }
             else
@@ -293,17 +293,17 @@ namespace Lab1oop
             double result;
             exp = expstr;
             expIdx = 0;
-            tokErrors = Errors.NOERR;
+            TokErrors = Errors.NOERR;
 
             getToken();
             if(token == "") {
-                tokErrors = Errors.NOEXP;
-                return new Result(0.0, tokErrors);
+                TokErrors = Errors.NOEXP;
+                return new Result(0.0, TokErrors);
             }
             EvalExp1(out result);
             if (token != "")
-                tokErrors = Errors.SYNTAX;
-            return new Result(result, tokErrors);
+                TokErrors = Errors.SYNTAX;
+            return new Result(result, TokErrors);
         }
     }
 }

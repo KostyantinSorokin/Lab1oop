@@ -8,17 +8,17 @@ namespace Lab1oop
 {
     internal class Result
     {
-        public double val;
+        public double Val;
         public Parser.Errors Code;
 
         public Result()
         {
-            val = 0.0;
+            Val = 0.0;
             Code = Parser.Errors.NOERR;
         }
 
         public Result(double v, Parser.Errors c){
-            val=v;
+            Val=v;
             Code = c;
         }
 
@@ -31,7 +31,7 @@ namespace Lab1oop
         {
             switch (Code)
             {
-                case Parser.Errors.NOERR: return val.ToString();
+                case Parser.Errors.NOERR: return Val.ToString();
                 case Parser.Errors.DIVBYZERO:
                     {
                         MessageBox.Show("Ділення на нуль неможливе, формула змінена на нуль");

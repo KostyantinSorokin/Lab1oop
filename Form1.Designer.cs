@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.addNewRow = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -37,6 +37,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,15 +49,15 @@
             this.textBox1.TabIndex = 8;
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
-            // button1
+            // addNewRow
             // 
-            this.button1.Location = new System.Drawing.Point(241, 33);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(190, 27);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Додати рядок";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.addNewRow.Location = new System.Drawing.Point(241, 33);
+            this.addNewRow.Name = "addNewRow";
+            this.addNewRow.Size = new System.Drawing.Size(190, 27);
+            this.addNewRow.TabIndex = 9;
+            this.addNewRow.Text = "Додати рядок";
+            this.addNewRow.UseVisualStyleBackColor = true;
+            this.addNewRow.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // button2
             // 
@@ -131,18 +132,29 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(736, 99);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(126, 27);
+            this.button8.TabIndex = 16;
+            this.button8.Text = "Підпис";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(874, 505);
+            this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.addNewRow);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.dataGridView1);
             this.Name = "Form1";
@@ -156,7 +168,7 @@
 
         #endregion
         private TextBox textBox1;
-        private Button button1;
+        private Button addNewRow;
         private Button button2;
         private Button button3;
         private Button button4;
@@ -164,5 +176,6 @@
         private Button button5;
         private Button button6;
         private Button button7;
+        private Button button8;
     }
 }
